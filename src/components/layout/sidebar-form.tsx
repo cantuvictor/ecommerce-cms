@@ -6,61 +6,78 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-} from "@/components/ui/sheet"
-import type { ReactNode } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+} from "../ui/sheet";
+
+import { Button } from "../ui/button";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Tooltip } from "@radix-ui/react-tooltip";
+import { TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { Trash2 } from "lucide-react";
 
 type SidebarFormProps = {
-    title: string;
-    children: ReactNode;
-    onSave: () => void;
+  title: string;
+  children: React.ReactNode;
+  onSave?: () => void;
+  onDelete?: () => void;
+  loading: boolean;
+};
+export function SidebarForm({
+  title,
+  children,
+  onSave,
+  onDelete,
+  loading,
+}: SidebarFormProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-}
-
-export function SideBarForm({
-    title,
-    children,
-    onSave
-}:SidebarFormProps) {
-    const navigate = useNavigate();
-    const location = useLocation();
-
-    function handleCloseForm(open: boolean) {
-        if (!open) {
-            const currentPath = location.pathname;
-            const newPath = currentPath.substring(0, currentPath.lastIndexOf('/'));
-            navigate(newPath);
-        }
+  function handleCloseForm(open: boolean) {
+    if (!open) {
+      const currentPath = location.pathname;
+      const newPath = currentPath.substring(0, currentPath.lastIndexOf("/"));
+      navigate(newPath);
     }
+  }
+  return (
+    <Sheet open={true} onOpenChange={handleCloseForm}>
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle>
+            <title>{title}</title>
+          </SheetTitle>
+          <SheetDescription>
+            Preencha os campos abaixo e clique em salvar.
+          </SheetDescription>
+        </SheetHeader>
 
-    return (
-        <Sheet open={true} onOpenChange={handleCloseForm}>
-  <SheetContent>
-    <SheetHeader>
-      <SheetTitle>{title}</SheetTitle>
-      <SheetDescription>
-        Preencha os campos abaixo e clique em Salvar.
-      </SheetDescription>
-    </SheetHeader>
+        <div className="px-8">{children}</div>
 
-    {children}
+        <SheetFooter className="flex flex-row justify-between">
+          <div className="flex-row gap-1">
+            <Button type="button" onClick={onSave} disabled={loading}>
+              Salvar
+            </Button>
 
-    <SheetFooter>
-        <div className="flex flex-row gap-1">
-
-            <button onClick={onSave}>
-                Salvar
-            </button>
-
-            <SheetClose>
-                <button>
-                    Cancelar
-                </button>
+            <SheetClose asChild>
+              <Button variant="outline" disabled={loading}>
+                Cancelar
+              </Button>
             </SheetClose>
-
-        </div>
-    </SheetFooter>
-  </SheetContent>
-</Sheet>
-    )
+          </div>
+          {onDelete && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="destructive" size="icon" onClick={onDelete}>
+                  <Trash2 />
+                </Button>
+                <TooltipContent>
+                  <p>Remover registro</p>
+                </TooltipContent>
+              </TooltipTrigger>
+            </Tooltip>
+          )}
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
+  );
 }
