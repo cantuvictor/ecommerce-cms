@@ -1,7 +1,7 @@
 import { api } from "../../../lib/axios";
 import type { ProductDTO } from "../dtos/product.dto";
 
-const _ENDPOINT = "/products";
+const _ENDPOINT = '/products';
 
 export const ProductService = {
 
@@ -10,13 +10,13 @@ export const ProductService = {
         return result.data;
     },
 
-    async getById(id: string): Promise<ProductDTO> {
-        const result = await api.get(`${_ENDPOINT}/${id}`);
+    async create(product: ProductDTO): Promise<ProductDTO> {
+        const result = await api.post(_ENDPOINT, product);
         return result.data;
     },
 
-    async create(product: ProductDTO): Promise<ProductDTO> {
-        const result = await api.post(_ENDPOINT, product);
+    async getById(id: string): Promise<ProductDTO> {
+        const result = await api.get(`${_ENDPOINT}/${id}`);
         return result.data;
     },
 
@@ -25,7 +25,8 @@ export const ProductService = {
         return result.data;
     },
 
-    async delete(id: string): Promise<void> {
+    async delete(id: string): Promise<void>{
         await api.delete(`${_ENDPOINT}/${id}`);
     }
+
 };

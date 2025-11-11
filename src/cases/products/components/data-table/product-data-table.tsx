@@ -3,6 +3,7 @@ import { productColumns } from "./product-columns";
 import { useProducts } from "../../hooks/use-product";
 
 export function ProductDataTable() {
+
     const {data: products, isLoading} = useProducts();
 
     return (
@@ -11,7 +12,8 @@ export function ProductDataTable() {
                 <p>Carregando...</p>
             ) : (
                 <DataTable columns={productColumns} data={products!} />
-            ) }
+            )}
         </div>
-    );
+
+    )
 }
