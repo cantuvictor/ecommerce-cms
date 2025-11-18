@@ -5,17 +5,15 @@ import { useProduct, useCreateProduct, useDeleteProduct, useUpdateProduct } from
 import { Input } from "@/components/ui/input";
 import type { ProductDTO } from "../dtos/product.dto";
 import { Textarea } from "@/components/ui/textarea";
-
 import { z } from "zod"
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { FormControl, Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { useCategories } from "@/cases/categories/hooks/use-category";
 import { useBrands } from "@/cases/brands/hooks/use-brand";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TabsContent } from "@radix-ui/react-tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 
 const formSchema = z.object({
   name: z.string().min(2, "Informe pelo menos 2 caracteres").max(100, "Máx. 100 caracteres"),
@@ -52,7 +50,6 @@ export function ProductForm() {
     },
   });
 
-  // Preenche o form ao editar
   useEffect(() => {
     if (data) {
       form.reset({
@@ -238,5 +235,5 @@ export function ProductForm() {
         </form>
       </Form>
     </SidebarForm>
-  )
+  );
 }
